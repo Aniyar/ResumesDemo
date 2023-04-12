@@ -1,0 +1,17 @@
+# Spring Boot configuration
+spring:
+  profiles:
+    active: development
+  # Database
+  datasource:
+    driver-class-name: ${DRIVER_CLASS_NAME:org.postgresql.Driver}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:32768}/${DB_NAME:postgres}?currentSchema=${DEFAULT_SCHEMA:public}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:}
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+      show-sql: true
+      default_schema: ${DEFAULT_SCHEMA:public}
+      dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}

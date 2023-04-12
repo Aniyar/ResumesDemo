@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  app:
+    image: 'resumes:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/resumes_db
+      - SPRING_DATASOURCE_USERNAME=aniyar
+      - SPRING_DATASOURCE_PASSWORD=aniyar
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+          
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=aniyar
+      - POSTGRES_PASSWORD=aniyar
