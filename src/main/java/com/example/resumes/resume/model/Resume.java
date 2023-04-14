@@ -1,4 +1,4 @@
-package com.example.resumes.model;
+package com.example.resumes.resume.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

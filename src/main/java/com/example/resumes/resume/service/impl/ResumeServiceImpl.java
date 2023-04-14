@@ -1,30 +1,38 @@
-package com.example.resumes.service.impl;
+package com.example.resumes.resume.service.impl;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.resumes.model.Resume;
-import com.example.resumes.repository.ResumeRepository;
-import com.example.resumes.service.ResumeService;
+import com.example.resumes.resume.model.Resume;
+import com.example.resumes.resume.repository.ResumeRepository;
+import com.example.resumes.resume.service.ResumeService;
 import com.example.resumes.util.ImageUtil;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import static com.example.resumes.constants.Constant.PATH_TO_NOJPG;
+import static com.example.resumes.constants.Constant.PATH_TO_NOPDF;
+
 
 @Service
 @AllArgsConstructor
-public class ResumeServiceImpl implements ResumeService{
+public class ResumeServiceImpl implements ResumeService {
     
     private final ResumeRepository repository;
 
-    public Resume uploadImage(Resume resume, MultipartFile file) throws IOException {
-		resume.setImageName(file.getOriginalFilename());
-		resume.setImageType(file.getContentType());
-		resume.setImageData(ImageUtil.compressImage(file.getBytes()));
-		return repository.save(resume);
+    public Resume uploadImage(Long resumeId, MultipartFile file) throws IOException {
+		Optional<Resume> optional = repository.findById(resumeId);
+		if (optional.isPresent()){
+			Resume resume = optional.get();
+			resume.setImageName(file.getOriginalFilename());
+			resume.setImageType(file.getContentType());
+			resume.setImageData(ImageUtil.compressImage(file.getBytes()));
+			repository.save(resume);
+			return resume;
+		}
+		return new Resume();
 	}
 	
 	public byte[] downloadImage(Long resumeId){
@@ -35,7 +43,7 @@ public class ResumeServiceImpl implements ResumeService{
 				return ImageUtil.decompressImage(resume.get().getImageData());
 			}
 		}
-		return ImageUtil.getBytes("src\\main\\resources\\static\\noavatar.jpg");
+		return ImageUtil.getBytes(PATH_TO_NOJPG);
 	}
 
     public Resume uploadCV(Resume resume, MultipartFile file) throws IOException {
@@ -52,6 +60,6 @@ public class ResumeServiceImpl implements ResumeService{
 				return ImageUtil.decompressImage(resume.get().getFileData());
 			}
 		}
-		return ImageUtil.getBytes("src\\main\\resources\\static\\nocv.pdf");
+		return ImageUtil.getBytes(PATH_TO_NOPDF);
     }
 }

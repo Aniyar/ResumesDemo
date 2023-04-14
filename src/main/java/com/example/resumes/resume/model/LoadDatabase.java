@@ -1,10 +1,9 @@
-package com.example.resumes.model;
+package com.example.resumes.resume.model;
 
 import java.util.List;
 
+import com.example.resumes.resume.repository.ResumeRepository;
 import org.springframework.stereotype.Component;
-
-import com.example.resumes.repository.ResumeRepository;
 
 import lombok.AllArgsConstructor;
 
