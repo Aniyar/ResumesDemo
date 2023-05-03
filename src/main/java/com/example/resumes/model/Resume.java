@@ -1,16 +1,10 @@
-package com.example.resumes.resume.model;
+package com.example.resumes.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.*;
 
 
 @Entity
@@ -21,28 +15,30 @@ import lombok.AllArgsConstructor;
 public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "position", nullable = false)
     private String position;
-    @Column(name = "company", nullable = true)
+    @Column(name = "company")
     private String company;
-    @Column(name = "comment", nullable = true)
+    @Column(name = "comment")
     private String comment;
     @Column(name = "salary", nullable = false)
     private Long salary;
-
+    @Column(name = "image_name")
     private String imageName;
+    @Column(name = "image_type")
     private String imageType;
     @Lob
-    @Column(name = "imagedata")
+    @Column(name = "image_data")
     private byte[] imageData;
-    
+    @Column(name = "file_name")
     private String fileName;
+    @Column(name = "file_type")
     private String fileType;
     @Lob
-    @Column(name = "filedata")
+    @Column(name = "file_data")
     private byte[] fileData;
     
     public Resume(String username, String company, String position, Long salary){

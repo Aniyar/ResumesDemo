@@ -1,4 +1,4 @@
-package com.example.resumes.job.model;
+package com.example.resumes.model;
 
 
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class Job {
     @Id
     private String  id;
+    private String APIid;
     private String position;
     private String category;
     private String company;

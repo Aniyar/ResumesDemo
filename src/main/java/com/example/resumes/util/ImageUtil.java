@@ -1,5 +1,9 @@
 package com.example.resumes.util;
 
+import lombok.experimental.UtilityClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,10 +12,7 @@ import java.nio.file.Paths;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@UtilityClass
 public class ImageUtil {
 	
     static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
@@ -34,9 +35,6 @@ public class ImageUtil {
         } catch (IOException e) {
             logger.info("Exception at compressImage " +e.getMessage());
         }
-        finally{
-            
-        }
         return outputStream.toByteArray();
     }
 
@@ -47,7 +45,7 @@ public class ImageUtil {
             return Files.readAllBytes(path);
         }
         catch (Exception ignored) {
-
+            logger.info("");
         }
         return new byte[0];
     }
@@ -64,8 +62,7 @@ public class ImageUtil {
             }
             outputStream.close();
         } catch (Exception ignored) {
-        }
-        finally{
+            logger.info("");
         }
         return outputStream.toByteArray();
     }
