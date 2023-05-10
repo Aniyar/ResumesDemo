@@ -1,4 +1,4 @@
-package com.example.resumes.repository.resumeRepository;
+package com.example.resumes.repository.JPA;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

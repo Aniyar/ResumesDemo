@@ -2,7 +2,7 @@ package com.example.resumes.service.impl;
 
 import com.example.resumes.exceptionHandler.*;
 import com.example.resumes.model.Resume;
-import com.example.resumes.repository.resumeRepository.ResumeRepository;
+import com.example.resumes.repository.JPA.ResumeRepository;
 import com.example.resumes.service.ResumeService;
 import com.example.resumes.util.ContentUtils;
 import com.example.resumes.util.ImageUtil;
@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.resumes.constants.Constant.PATH_TO_NOJPG;
+import static com.example.resumes.constants.Constant.PATH_TO_NOPDF;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +38,7 @@ public class ResumeServiceImpl implements ResumeService {
 		return new Resume();
 	}
 
-	public ResponseEntity downloadImage(Long resumeId) throws ResumeNotFoundException, ImageNotFoundException {
+	public ResponseEntity<byte[]> downloadImage(Long resumeId) throws ResumeNotFoundException {
         byte[] ans = {};
 		Optional<Resume> resume = repository.findById(resumeId);
 		if (resume.isPresent()){
@@ -46,12 +49,15 @@ public class ResumeServiceImpl implements ResumeService {
 				headers.setContentDisposition(ContentDisposition.inline().build());
 				return new ResponseEntity(imgData, headers, HttpStatus.OK);
 			}
-			throw new ImageNotFoundException(resumeId);
+			byte[] imgData = ImageUtil.getBytes(PATH_TO_NOJPG);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.IMAGE_PNG);
+			return new ResponseEntity<>(imgData, headers, HttpStatus.NOT_FOUND);
 		}
 		throw new ResumeNotFoundException(resumeId);
 	}
 
-    public ResponseEntity uploadCV(Long resumeId, MultipartFile file) throws IOException, ResumeNotFoundException, FileUploadException {
+    public ResponseEntity<Resume> uploadCV(Long resumeId, MultipartFile file) throws IOException, ResumeNotFoundException, FileUploadException {
 		Optional<Resume> optional = repository.findById(resumeId);
 		if (optional.isPresent()){
 			Resume resume = optional.get();
@@ -70,7 +76,7 @@ public class ResumeServiceImpl implements ResumeService {
 		throw new ResumeNotFoundException(resumeId);
 	}
 
-	public ResponseEntity downloadCV(Long resumeId) throws CVNotFoundException, ResumeNotFoundException {
+	public ResponseEntity<byte[]> downloadCV(Long resumeId) throws ResumeNotFoundException {
         Optional<Resume> resume = repository.findById(resumeId);
 		if (resume.isPresent()){
 			if (resume.get().getFileData() != null){
@@ -80,12 +86,15 @@ public class ResumeServiceImpl implements ResumeService {
 				headers.setContentDisposition(ContentDisposition.inline().build());
 				return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
 			}
-			throw new CVNotFoundException(resume.get().getUsername());
+			byte[] pdfContent = ImageUtil.getBytes(PATH_TO_NOPDF);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			return new ResponseEntity<>(pdfContent, headers, HttpStatus.NOT_FOUND);
 		}
 		throw new ResumeNotFoundException(resumeId);
     }
 
-	public ResponseEntity<Resume> putResume(Long id, Resume resume) throws ContentNotAllowedException, ResumeNotFoundException, NullFieldNotAllowedException {
+	public ResponseEntity<Resume> putResume(Long id, Resume resume) throws ContentNotAllowedException, ResumeNotFoundException {
 		if (repository.existsById(id)){
 			if (resume.getComment() != null){
 				List<ObjectError> errors = ContentUtils.getContentErrorsFrom(resume.getComment());
@@ -93,9 +102,6 @@ public class ResumeServiceImpl implements ResumeService {
 					throw new ContentNotAllowedException(errors);
 				}
 			}
-			if (resume.getSalary() == null) throw new NullFieldNotAllowedException("salary");
-			if (resume.getUsername() == null) throw new NullFieldNotAllowedException("username");
-			if (resume.getPosition() == null) throw new NullFieldNotAllowedException("position");
 			return new ResponseEntity<>(repository.save(resume), HttpStatus.OK);
 		}
 		else{ throw new ResumeNotFoundException(id);}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import Swal from 'sweetalert';
 
 
 const ImageEdit = () => {
@@ -23,14 +24,19 @@ const ImageEdit = () => {
     method: 'PUT',
     body: formData,
   })
-    .then((response) => response.json())
+    .then((response) => {response.clone().json();
+      if (!response.ok) {
+        console.log(response);
+        alert(response.statusText);
+      }else {
+        navigate('/resumes');
+      }
+      })
     .then((data) => {
-      // Handle the response from the server
     })
     .catch((error) => {
-      // Handle errors
     });
-    navigate('/resumes');
+
   }
 
   const title = <h2>{'Edit Avatar'}</h2>;

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static com.example.resumes.constants.Constant.queueName;
+import static com.example.resumes.constants.JobConstant.N_JOBS_FROM_API;
+import static com.example.resumes.constants.JobConstant.SORT_BY;
 
 @Service
 @Slf4j
@@ -19,7 +21,7 @@ public class JobListener {
 
     @RabbitListener(queues = {queueName})
     public void onMessage(byte[] message) throws JobAPIException, IOException {
-        jobService.getJobsFromAPI(50, "date");
+        jobService.getJobsFromAPI(N_JOBS_FROM_API, SORT_BY);
 
     }
 }

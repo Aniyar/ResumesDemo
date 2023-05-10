@@ -8,7 +8,15 @@ import java.util.List;
 @AllArgsConstructor
 public class ContentNotAllowedException extends Exception {
     List<ObjectError> errors;
-    public List<ObjectError> getErrors() {
-        return errors;
-    }
+    @Override
+    public String getMessage() { return errors.toString();}
+
+//    @Override
+//    public String toString() {
+//        foreach (ObjectError error: errors):
+//             ) {
+//
+//        }
+//        return super.toString();
+//    }
 }

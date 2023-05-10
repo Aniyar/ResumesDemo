@@ -16,8 +16,7 @@ public class JobPublisher {
     private final RabbitTemplate rabbitTemplate;
     @Scheduled(fixedRate = 1000000, initialDelay = 0)
     public void publishJob(){
-        log.info("");
-        System.out.println("Sending scheduled message...");
+        log.info("Sending scheduled message...");
         rabbitTemplate.convertAndSend(topicExchangeName, queueName, "");
     }
 

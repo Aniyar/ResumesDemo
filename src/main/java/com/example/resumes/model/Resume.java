@@ -40,7 +40,7 @@ public class Resume {
     @Lob
     @Column(name = "file_data")
     private byte[] fileData;
-    
+
     public Resume(String username, String company, String position, Long salary){
         this.username = username;
         this.company = company;

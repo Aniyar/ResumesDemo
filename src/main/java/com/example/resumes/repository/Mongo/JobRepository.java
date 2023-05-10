@@ -1,4 +1,4 @@
-package com.example.resumes.repository.jobRepository;
+package com.example.resumes.repository.Mongo;
 
 import com.example.resumes.model.Job;
 import org.springframework.data.mongodb.repository.MongoRepository;

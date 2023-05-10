@@ -1,12 +1,12 @@
 package com.example.resumes.controller;
 
-import com.example.resumes.exceptionHandler.*;
+import com.example.resumes.exceptionHandler.ContentNotAllowedException;
+import com.example.resumes.exceptionHandler.FileUploadException;
+import com.example.resumes.exceptionHandler.ResumeNotFoundException;
 import com.example.resumes.model.Resume;
-import com.example.resumes.repository.resumeRepository.ResumeRepository;
+import com.example.resumes.repository.JPA.ResumeRepository;
 import com.example.resumes.service.impl.ResumeServiceImpl;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +20,6 @@ public class ResumeController {
     private final ResumeRepository resumeRepository;
     private final ResumeServiceImpl resumeService;
 
-    static Logger logger = LoggerFactory.getLogger(ResumeController.class);
-
     @GetMapping()
     Iterable<Resume> getResumes(){
         return resumeRepository.findAll();
@@ -33,18 +31,19 @@ public class ResumeController {
     }
 
     @GetMapping("/{resumeId}/download/image")
-    public ResponseEntity<byte[]> downloadImage(@PathVariable Long resumeId) throws IOException, ResumeNotFoundException, ImageNotFoundException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long resumeId) throws ResumeNotFoundException {
         return resumeService.downloadImage(resumeId);
     }
 //javax
     @GetMapping("/{resumeId}/download/CV")
-    public ResponseEntity<byte[]> downloadCV(@PathVariable Long resumeId) throws ResumeNotFoundException, CVNotFoundException {
+    public ResponseEntity<byte[]> downloadCV(@PathVariable Long resumeId) throws ResumeNotFoundException {
         return resumeService.downloadCV(resumeId);
     }
 
 
     @PostMapping("/new")
     Resume postResume(@RequestBody Resume resume){
+
         return resumeRepository.save(resume);
     }
 
@@ -61,7 +60,7 @@ public class ResumeController {
 
     @PutMapping("/{id}")
     ResponseEntity<Resume> putResume(@PathVariable Long id,
-                                     @RequestBody Resume resume) throws ResumeNotFoundException, ContentNotAllowedException, NullFieldNotAllowedException {
+                                     @RequestBody Resume resume) throws ResumeNotFoundException, ContentNotAllowedException {
         return resumeService.putResume(id, resume);
     }
 

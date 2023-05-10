@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @AllArgsConstructor
 @EnableScheduling
-@EnableMongoRepositories(basePackages = "com.example.resumes.repository.jobRepository")
-@EnableJpaRepositories(basePackages = "com.example.resumes.repository.resumeRepository")
+@EnableJpaRepositories(basePackages = "com.example.resumes.repository.JPA")
+@EnableMongoRepositories(basePackages = "com.example.resumes.repository.Mongo")
 public class ResumesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ResumesApplication.class, args);

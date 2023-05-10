@@ -60,6 +60,9 @@ const ResumeForm = () => {
         .then((data) => {
         })
         .catch((error) => {
+          const { data } = error.response;
+          console.log(data); // you can log the error message to the console or use it to display the error on your UI
+          return Promise.reject(error);
         });
     }
     setResume(initialFormState);
