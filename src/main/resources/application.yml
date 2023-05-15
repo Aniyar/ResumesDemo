@@ -32,6 +32,11 @@ spring:
   logging:
     level:
       org.springframework.data.jpa: DEBUG
+  graphql:
+    graphiql:
+      enabled: true
+    servlet:
+      max-query-depth: 100
 jwt:
   secret: aniyarsecretabcdefghijklmnOPQRSTUVWXYZ
   issuer: aniyarissuer

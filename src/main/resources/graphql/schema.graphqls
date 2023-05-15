@@ -1,0 +1,34 @@
+
+# The Root Query for the application
+type Query {
+    documentDetails(id: String): DocumentDetails
+    getAllDocuments: [DocumentDetails]!
+}
+
+# The Root Mutation for the application
+type Mutation {
+    addDocuments(fistName: String!, surname: String!, iin: String!, documentNumber: String!, resumeUsername: String!) : DocumentDetails!
+    editDocuments(id: String!, fistName: String, surname: String, iin: String, documentNumber: String, resumeUsername: String) : DocumentDetails!
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type DocumentDetails {
+    id: ID!
+    surname: String!
+    firstName: String!
+    iin: String!
+    documentNumber: String!
+    resume: Resume
+}
+
+type Resume {
+    username: String
+    position: String
+    salary: Int
+    fileData: String
+    imageData: String
+}
